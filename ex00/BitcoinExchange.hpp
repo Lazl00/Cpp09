@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #pragma once
+
 # include <iostream>
 # include <fstream>
 # include <sstream>
@@ -29,5 +30,6 @@ class BitcoinExchange
         ~BitcoinExchange();
 
         void loadDatabase(const std::string &filename);
+        double find_date(const std::string &date);
         void processInput(const std::string &filename);
 };
