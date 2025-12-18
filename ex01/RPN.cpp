@@ -45,13 +45,6 @@ bool    isoperator(const char c)
     return (0);
 }
 
-bool    err(const std::string err_msg)
-{
-    std::cerr << err_msg << std::endl;
-
-    return 0;
-}
-
 RPN::RPN() {}
 
 RPN::RPN(const RPN &other) : _stack(other._stack) {}
@@ -67,23 +60,40 @@ RPN::~RPN() {}
 
 int RPN::getResult() { return (_stack.top()); }
 
-void RPN::compute(const std::string &entry)
+void RPN::compute(const char* entry)
 {
-    std::stringstream stream(entry);
-    std::string token;
+    std::stack<int> s;
 
-    while (stream >> token)
+    for (size_t i = 0; entry[i]; ++i)
     {
-        if (token.length() != 1)
-            throw std::invalid_argument("Bad entry format detected.");
+        char c = entry[i];
 
-        if (isdigit(token[0]))
-            _stack.push(token[0] - '0');
-        else if (isoperator(token[0]) && _stack.size() >= 2)
-            operate(_stack, token[0]);
+        if (c == ' ')
+            continue;
+        else if (isdigit(c))
+            s.push(c - '0');
+        else if (isoperator(c))
+        {
+            if (s.size() < 2)
+                throw std::runtime_error("Bad entry format");
+            int b = s.top(); s.pop();
+            int a = s.top(); s.pop();
+            if (c == '+') s.push(a + b);
+            else if (c == '-') s.push(a - b);
+            else if (c == '*') s.push(a * b);
+            else if (c == '/')
+            {
+                if (b == 0) throw std::runtime_error("Division by 0");
+                s.push(a / b);
+            }
+        }
         else
-            throw std::invalid_argument("Bad entry format detected.");
+            throw std::runtime_error("Bad entry format");
     }
-    if (_stack.size() != 1)
-        throw std::invalid_argument("Bad entry format detected.");
+
+    if (s.size() != 1)
+        throw std::runtime_error("Bad entry format");
+
+    _stack = s;
 }
+

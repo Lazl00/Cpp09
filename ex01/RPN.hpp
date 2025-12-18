@@ -13,7 +13,6 @@
 #pragma once
 
 # include <iostream>
-# include <string>
 # include <stack>
 # include <sstream>
 
@@ -28,6 +27,6 @@ class RPN
         RPN &operator=(const RPN &other);
         ~RPN();
 
-        void compute(const std::string &entry);
+        void compute(const char* entry);
         int getResult();
 };

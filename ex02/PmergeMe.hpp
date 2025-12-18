@@ -15,17 +15,30 @@
 # include <iostream>
 # include <vector>
 # include <deque>
-# include <string>
+# include <algorithm>
+# include <chrono>
+# include <stdexcept>
+# include <limits>
+
 
 class PmergeMe
 {
+    private:
+        std::vector<int> _vector;
+        std::deque<int>  _deque;
+    
     public:
         PmergeMe();
         PmergeMe(const PmergeMe &other);
         PmergeMe &operator=(const PmergeMe &other);
         ~PmergeMe();
 
-        void parseInput(int ac, char **av);
-        void sort();
-        void displayResults() const;
+        bool check_doubles();
+        void parsing(int ac, char **av);
+        void sort_vector();
+        void sort_deque();
+        void display_before() const;
+        void display_after() const;
+        void display_Vector() const;
+        void display_Deque() const;
 };
