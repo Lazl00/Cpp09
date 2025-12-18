@@ -54,6 +54,15 @@ bool    err(const std::string err_msg)
 
 RPN::RPN() {}
 
+RPN::RPN(const RPN &other) : _stack(other._stack) {}
+
+RPN &RPN::operator=(const RPN &other)
+{
+    if (this != &other)
+        _stack = other._stack;
+    return *this;
+}
+
 RPN::~RPN() {}
 
 int RPN::getResult() { return (_stack.top()); }
